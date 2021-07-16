@@ -6,14 +6,19 @@ import java.io.IOException;
 
 public class Game_window  extends JFrame {
 
+    private  static int window_weigth = 800;
+    private  static int window_height = 700;
+    private  static int drop_diam = 100;
     private  static Game_window game_window;
     private  static long last_frame_time;
     private  static Image background;
     private  static Image drop;
     private  static Image  game_over;
     private  static float drop_left = 200;
-    private  static float drop_top = -200;
+    private  static float drop_top = 200;
     private static  float speed = 200;
+    private static  int top_speed_mod = 1;
+    private static int left_speed_mod = 1;
 
 
     public static void main(String[] args) throws IOException {
@@ -23,7 +28,7 @@ public class Game_window  extends JFrame {
         game_window = new Game_window();
         game_window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         game_window.setLocation(200, 150);
-        game_window.setSize(800,600);
+        game_window.setSize(window_weigth,window_height);
         game_window.setResizable(false);
         last_frame_time = System.nanoTime();
         GameField gameField = new GameField();
@@ -38,12 +43,27 @@ public class Game_window  extends JFrame {
         float delta_time = (parent_time-last_frame_time) * 0.000000001f;
         last_frame_time = parent_time;
 
-        drop_top=drop_top+speed*delta_time;
 
+        drop_top=drop_top+speed*delta_time*top_speed_mod;
+        drop_left=drop_left+speed*delta_time*left_speed_mod;
+
+
+        if (drop_top>window_height-drop_diam){
+           top_speed_mod=0-top_speed_mod;
+        }
+        if (drop_top<0){
+            top_speed_mod=0-top_speed_mod;
+        }
+        if(drop_left<0){
+            left_speed_mod=0-left_speed_mod;
+        }
+        if(drop_left>window_weigth-drop_diam){
+            left_speed_mod=0-left_speed_mod;
+        }
 
 
         graphics.drawImage(background, 0 , 0 , null);
-        graphics.drawImage(drop, (int)drop_left, (int)drop_top, 100,100,null);
+        graphics.drawImage(drop, (int)drop_left, (int)drop_top, drop_diam,drop_diam,null);
 
     }
 
