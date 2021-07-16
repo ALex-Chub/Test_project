@@ -1,5 +1,6 @@
 package com.company;
 import javax.swing.*;
+import java.awt.*;
 
 public class Game_window  extends JFrame {
 
@@ -11,8 +12,24 @@ public class Game_window  extends JFrame {
         game_window.setLocation(200, 150);
         game_window.setSize(800,600);
         game_window.setResizable(false);
+        GameField gameField = new GameField();
+        game_window.add(gameField);
 
         game_window.setVisible(true);
+
+    }
+
+    private static void onRepaint(Graphics graphics){
+        graphics.fillOval(100,20, 200, 200);
+
+    }
+
+    private static class GameField extends JPanel{
+        @Override
+        protected void paintComponent(Graphics graphics){
+            super.paintComponent(graphics);
+            onRepaint(graphics);
+        }
 
     }
 }
